@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Daily Diary launchd template. The setup agent renders this with:
+    __USER__       -> short username (e.g. nivas)
+    __HOUR__       -> daily run hour, 24h (default 18)
+    __MINUTE__     -> daily run minute (default 0)
+  Installed to: ~/Library/LaunchAgents/com.__USER__.daily-diary.plist
+  Loaded with:  launchctl load ~/Library/LaunchAgents/com.__USER__.daily-diary.plist
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.__USER__.daily-diary</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/Users/__USER__/.local/bin/daily-diary-run.sh</string>
+  </array>
+
+  <!-- Evening run -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key>
+    <integer>__HOUR__</integer>
+    <key>Minute</key>
+    <integer>__MINUTE__</integer>
+  </dict>
+
+  <!-- Morning catch-up: fires shortly after login/boot; the wrapper's
+       cooldown decides whether a catch-up run actually proceeds. -->
+  <key>RunAtLoad</key>
+  <true/>
+
+  <key>StandardOutPath</key>
+  <string>/Users/__USER__/Library/Logs/daily-diary.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/__USER__/Library/Logs/daily-diary.log</string>
+</dict>
+</plist>
